@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud and contributors
+ * Copyright 2022 Clément "carlodrift" Raynaud and contributors
  *
  * This file is part of Altinspector.
  *
@@ -17,37 +17,28 @@
  * along with Altinspector.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.altinspector.listeners;
+package net.clementraynaud.altinspector.spigot.listeners;
 
-import com.google.common.hash.Hashing;
-import org.bukkit.configuration.file.FileConfiguration;
+import net.clementraynaud.altinspector.common.AltManager;
+import net.clementraynaud.altinspector.common.YamlFile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 public class PlayerListener implements Listener {
 
-    private final JavaPlugin plugin;
-    private final FileConfiguration config;
+    private final YamlFile data;
 
-    public PlayerListener(JavaPlugin plugin, FileConfiguration config) {
-        this.plugin = plugin;
-        this.config = config;
+    public PlayerListener(YamlFile data) {
+        this.data = data;
     }
 
     @EventHandler
     public void onPlayerLogin(PlayerLoginEvent event) {
-        String ip = Hashing.sha512().hashString(event.getRealAddress().getHostAddress(), StandardCharsets.UTF_8).toString();
-        List<String> list = this.config.getStringList(ip);
-        if (!list.contains(event.getPlayer().getUniqueId().toString())) {
-            list.add(event.getPlayer().getUniqueId().toString());
-            this.config.set(ip, list);
-            this.plugin.saveConfig();
-        }
+        String playerId = event.getPlayer().getUniqueId().toString();
+        String playerIp = event.getRealAddress().getHostAddress();
+
+        AltManager.savePlayerIp(this.data, playerId, playerIp);
     }
 
 }

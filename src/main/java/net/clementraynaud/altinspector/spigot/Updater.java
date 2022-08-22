@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud and contributors
+ * Copyright 2022 Clément "carlodrift" Raynaud and contributors
  *
  * This file is part of Altinspector.
  *
@@ -17,7 +17,7 @@
  * along with Altinspector.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.altinspector;
+package net.clementraynaud.altinspector.spigot;
 
 import org.bukkit.plugin.java.JavaPlugin;
 

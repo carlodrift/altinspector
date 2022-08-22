@@ -1,4 +1,4 @@
-# Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud and contributors
+# Copyright 2022 Clément "carlodrift" Raynaud and contributors
 #
 # This file is part of Altinspector.
 #
@@ -17,7 +17,7 @@
 
 name: Altinspector
 version: ${project.version}
-main: net.clementraynaud.altinspector.Altinspector
+main: net.clementraynaud.altinspector.spigot.Altinspector
 api-version: 1.13
 authors: [ carlodrift ]
 description: Find your players' other accounts beyond IP check
@@ -28,6 +28,7 @@ commands:
     description: The command to use Altinspector.
     usage: /altinspector
     permission: altinspector
+    aliases: [ alti ]
 
 permissions:
   altinspector:

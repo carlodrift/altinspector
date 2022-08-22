@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud and contributors
+ * Copyright 2022 Clément "carlodrift" Raynaud and contributors
  *
  * This file is part of Altinspector.
  *
@@ -17,23 +17,24 @@
  * along with Altinspector.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.altinspector;
+package net.clementraynaud.altinspector.spigot;
 
-import net.clementraynaud.altinspector.commands.altinspector.AltinspectorCommand;
-import net.clementraynaud.altinspector.listeners.PlayerListener;
+import net.clementraynaud.altinspector.common.YamlFile;
+import net.clementraynaud.altinspector.spigot.commands.altinspector.AltinspectorCommand;
+import net.clementraynaud.altinspector.spigot.listeners.PlayerListener;
 import org.bstats.bukkit.Metrics;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Altinspector extends JavaPlugin {
+
     private static final int BSTATS_ID = 16034;
 
     @Override
     public void onEnable() {
-        FileConfiguration config = this.getConfig();
-        this.getCommand("altinspector").setExecutor(new AltinspectorCommand(config, this));
+        YamlFile data = new YamlFile("data", this.getDataFolder().toPath());
+        this.getCommand("altinspector").setExecutor(new AltinspectorCommand(data, this));
         new Metrics(this, Altinspector.BSTATS_ID);
-        this.getServer().getPluginManager().registerEvents(new PlayerListener(this, config), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerListener(data), this);
         new Updater(this, this.getFile().getAbsolutePath(), this.getName());
     }
 }
