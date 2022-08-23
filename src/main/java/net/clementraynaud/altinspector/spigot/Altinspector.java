@@ -22,19 +22,39 @@ package net.clementraynaud.altinspector.spigot;
 import net.clementraynaud.altinspector.common.YamlFile;
 import net.clementraynaud.altinspector.spigot.commands.altinspector.AltinspectorCommand;
 import net.clementraynaud.altinspector.spigot.listeners.PlayerListener;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Altinspector extends JavaPlugin {
 
     private static final int BSTATS_ID = 16034;
+    private YamlFile data;
+    private BukkitAudiences adventure;
+
+    public YamlFile data() {
+        return this.data;
+    }
+
+    public BukkitAudiences adventure() {
+        return this.adventure;
+    }
 
     @Override
     public void onEnable() {
-        YamlFile data = new YamlFile("data", this.getDataFolder().toPath());
-        this.getCommand("altinspector").setExecutor(new AltinspectorCommand(data, this));
+        this.data = new YamlFile("data", this.getDataFolder().toPath());
+        this.adventure = BukkitAudiences.create(this);
+        this.getCommand("altinspector").setExecutor(new AltinspectorCommand(this));
         new Metrics(this, Altinspector.BSTATS_ID);
-        this.getServer().getPluginManager().registerEvents(new PlayerListener(data), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerListener(this.data), this);
         new Updater(this, this.getFile().getAbsolutePath(), this.getName());
+    }
+
+    @Override
+    public void onDisable() {
+        if (this.adventure != null) {
+            this.adventure.close();
+            this.adventure = null;
+        }
     }
 }

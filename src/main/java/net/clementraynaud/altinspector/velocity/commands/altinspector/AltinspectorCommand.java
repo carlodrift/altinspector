@@ -23,9 +23,12 @@ import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.command.SimpleCommand;
 import com.velocitypowered.api.proxy.ProxyServer;
 import net.clementraynaud.altinspector.common.AltManager;
+import net.clementraynaud.altinspector.common.Messages;
 import net.clementraynaud.altinspector.common.YamlFile;
 import net.clementraynaud.altinspector.velocity.Altinspector;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -63,7 +66,7 @@ public class AltinspectorCommand implements SimpleCommand {
         String[] args = invocation.arguments();
 
         if (args.length == 0) {
-            source.sendMessage(Component.text("" + "Altinspector " + "• " + "Specify a player name or UUID."));
+            source.sendMessage(Messages.NO_PLAYER_SPECIFIED.component());
             return;
         }
         this.proxy.getScheduler().buildTask(this.plugin, () -> {
@@ -81,14 +84,10 @@ public class AltinspectorCommand implements SimpleCommand {
             Set<String> names = new HashSet<>();
             AltManager.allAlts(targetId, this.data).forEach(id -> names.add(this.name(id)));
             if (names.isEmpty()) {
-                source.sendMessage(Component.text("No other account found for " + this.name(targetId)
-                        + "."
-                ));
+                source.sendMessage(Messages.NO_ALTS_FOUND.component(this.name(targetId)));
             } else {
-                source.sendMessage(Component.text("Other accounts found for " + this.name(targetId)
-                        + ": " + String.join(", "
-                        , names) + "."
-                ));
+                source.sendMessage(Messages.ALTS_FOUND.component(this.name(targetId)).append(LegacyComponentSerializer.legacyAmpersand().deserialize("&e" + String.join("&7" + ", "
+                        + "&e", names)).append(Component.text(".", NamedTextColor.GRAY))));
             }
         }).schedule();
     }

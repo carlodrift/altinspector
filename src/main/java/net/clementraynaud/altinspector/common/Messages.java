@@ -19,21 +19,35 @@
 
 package net.clementraynaud.altinspector.common;
 
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 
 public enum Messages {
 
-    PREFIX(ChatColor.LIGHT_PURPLE + "Altinspector " + ChatColor.DARK_GRAY + "• " + ChatColor.GRAY),
-    MISSING_ARGUMENT(ChatColor.RED + "Specify a player name or UUID.");
+    PREFIX(Component.text("", NamedTextColor.GRAY)
+            .append(Component.text("Altinspector", NamedTextColor.LIGHT_PURPLE))
+            .append(Component.text(" • ", NamedTextColor.DARK_GRAY))),
+    NO_PLAYER_SPECIFIED(Component.text("Specify a player name or UUID.", NamedTextColor.RED)),
+    NO_ALTS_FOUND(Component.text("No other account found for ")
+            .append(Component.text("%s", NamedTextColor.YELLOW))
+            .append(Component.text(".", NamedTextColor.GRAY))),
 
-    private final String message;
+    ALTS_FOUND(Component.text("Other accounts found for ")
+            .append(Component.text("%s", NamedTextColor.YELLOW))
+            .append(Component.text(": ", NamedTextColor.GRAY)));
 
-    Messages(String message) {
+
+    private final Component message;
+
+    Messages(Component message) {
         this.message = message;
     }
 
-    @Override
-    public String toString() {
-        return this.message;
+    public Component component(String... args) {
+        return Messages.PREFIX.message.append(GsonComponentSerializer.gson().deserialize(String.format(GsonComponentSerializer.gson().serialize(
+                        this.message),
+                args
+        )));
     }
 }

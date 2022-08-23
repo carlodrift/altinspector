@@ -21,14 +21,16 @@ package net.clementraynaud.altinspector.spigot.commands.altinspector;
 
 import net.clementraynaud.altinspector.common.AltManager;
 import net.clementraynaud.altinspector.common.Messages;
-import net.clementraynaud.altinspector.common.YamlFile;
-import org.bukkit.ChatColor;
+import net.clementraynaud.altinspector.spigot.Altinspector;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -41,11 +43,9 @@ import java.util.stream.Collectors;
 
 public class AltinspectorCommand implements CommandExecutor, TabCompleter {
 
-    private final YamlFile data;
-    private final JavaPlugin plugin;
+    private final Altinspector plugin;
 
-    public AltinspectorCommand(YamlFile data, JavaPlugin plugin) {
-        this.data = data;
+    public AltinspectorCommand(Altinspector plugin) {
         this.plugin = plugin;
     }
 
@@ -63,8 +63,9 @@ public class AltinspectorCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        Audience source = this.plugin.adventure().sender(sender);
         if (args.length == 0) {
-            sender.sendMessage("" + Messages.PREFIX + Messages.MISSING_ARGUMENT);
+            source.sendMessage(Messages.NO_PLAYER_SPECIFIED.component());
             return true;
         }
         this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
@@ -75,16 +76,12 @@ public class AltinspectorCommand implements CommandExecutor, TabCompleter {
                 targetId = this.plugin.getServer().getOfflinePlayer(args[0]).getUniqueId().toString();
             }
             Set<String> names = new HashSet<>();
-            AltManager.allAlts(targetId, this.data).forEach(id -> names.add(this.name(id)));
+            AltManager.allAlts(targetId, this.plugin.data()).forEach(id -> names.add(this.name(id)));
             if (names.isEmpty()) {
-                sender.sendMessage(Messages.PREFIX + "No other account found for " + ChatColor.YELLOW + this.name(targetId)
-                        + ChatColor.GRAY + "."
-                );
+                source.sendMessage(Messages.NO_ALTS_FOUND.component(this.name(targetId)));
             } else {
-                sender.sendMessage(Messages.PREFIX + "Other accounts found for " + ChatColor.YELLOW + this.name(targetId)
-                        + ChatColor.GRAY + ": " + ChatColor.YELLOW + String.join(ChatColor.GRAY + ", "
-                        + ChatColor.YELLOW, names) + ChatColor.GRAY + "."
-                );
+                source.sendMessage(Messages.ALTS_FOUND.component(this.name(targetId)).append(LegacyComponentSerializer.legacyAmpersand().deserialize("&e" + String.join("&7" + ", "
+                        + "&e", names)).append(Component.text(".", NamedTextColor.GRAY))));
             }
         });
         return true;
