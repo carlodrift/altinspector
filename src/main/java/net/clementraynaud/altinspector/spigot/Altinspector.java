@@ -44,10 +44,12 @@ public final class Altinspector extends JavaPlugin {
     public void onEnable() {
         this.data = new YamlFile("data", this.getDataFolder().toPath());
         this.adventure = BukkitAudiences.create(this);
+
         this.getCommand("altinspector").setExecutor(new AltinspectorCommand(this));
-        new Metrics(this, Altinspector.BSTATS_ID);
         this.getServer().getPluginManager().registerEvents(new PlayerListener(this.data), this);
+
         new Updater(this, this.getFile().getAbsolutePath(), this.getName());
+        new Metrics(this, Altinspector.BSTATS_ID);
     }
 
     @Override

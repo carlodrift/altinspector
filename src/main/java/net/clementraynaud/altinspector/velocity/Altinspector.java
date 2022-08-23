@@ -30,12 +30,26 @@ public class Altinspector {
     @DataDirectory
     @Inject
     private Path dataDirectory;
+    private YamlFile data;
+    private YamlFile usernames;
+
+    public YamlFile data() {
+        return this.data;
+    }
+
+    public YamlFile usernames() {
+        return this.usernames;
+    }
+
+    public ProxyServer proxy() {
+        return this.proxy;
+    }
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-        YamlFile data = new YamlFile("data", this.dataDirectory);
-        YamlFile usernames = new YamlFile("usernames", this.dataDirectory);
-        this.proxy.getEventManager().register(this, new PlayerListener(data, usernames));
+        this.data = new YamlFile("data", this.dataDirectory);
+        this.usernames = new YamlFile("usernames", this.dataDirectory);
+        this.proxy.getEventManager().register(this, new PlayerListener(this.data, this.usernames));
 
         CommandManager commandManager = this.proxy.getCommandManager();
         CommandMeta commandMeta = commandManager.metaBuilder("altinspector")
@@ -43,7 +57,7 @@ public class Altinspector {
                 .plugin(this)
                 .build();
 
-        SimpleCommand simpleCommand = new AltinspectorCommand(this.proxy, this, data, usernames);
+        SimpleCommand simpleCommand = new AltinspectorCommand(this);
 
         commandManager.register(commandMeta, simpleCommand);
     }

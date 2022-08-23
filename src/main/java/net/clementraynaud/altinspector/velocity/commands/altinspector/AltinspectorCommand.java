@@ -38,21 +38,14 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class AltinspectorCommand implements SimpleCommand {
-
-    private final ProxyServer proxy;
     private final Altinspector plugin;
-    private final YamlFile data;
-    private final YamlFile usernames;
 
-    public AltinspectorCommand(ProxyServer proxy, Altinspector plugin, YamlFile data, YamlFile usernames) {
-        this.proxy = proxy;
+    public AltinspectorCommand(Altinspector plugin) {
         this.plugin = plugin;
-        this.data = data;
-        this.usernames = usernames;
     }
 
     private String name(String playerId) {
-        String name = this.usernames.getString(playerId);
+        String name = this.plugin.usernames().getString(playerId);
         if (name == null) {
             name = playerId;
         }
@@ -69,20 +62,20 @@ public class AltinspectorCommand implements SimpleCommand {
             source.sendMessage(Messages.NO_PLAYER_SPECIFIED.component());
             return;
         }
-        this.proxy.getScheduler().buildTask(this.plugin, () -> {
+        this.plugin.proxy().getScheduler().buildTask(this.plugin, () -> {
             String targetId = args[0];
             try {
                 UUID.fromString(targetId);
             } catch (IllegalArgumentException e) {
-                for (String playerId : this.usernames.getKeys(false)) {
-                    if (targetId.equalsIgnoreCase(this.usernames.getString(playerId))) {
+                for (String playerId : this.plugin.usernames().getKeys(false)) {
+                    if (targetId.equalsIgnoreCase(this.plugin.usernames().getString(playerId))) {
                         targetId = playerId;
                         break;
                     }
                 }
             }
             Set<String> names = new HashSet<>();
-            AltManager.allAlts(targetId, this.data).forEach(id -> names.add(this.name(id)));
+            AltManager.allAlts(targetId, this.plugin.data()).forEach(id -> names.add(this.name(id)));
             if (names.isEmpty()) {
                 source.sendMessage(Messages.NO_ALTS_FOUND.component(this.name(targetId)));
             } else {
@@ -95,7 +88,7 @@ public class AltinspectorCommand implements SimpleCommand {
     @Override
     public List<String> suggest(Invocation invocation) {
         String[] args = invocation.arguments();
-        List<String> suggestions = this.usernames.getValues(false).values().stream()
+        List<String> suggestions = this.plugin.usernames().getValues(false).values().stream()
                 .map(Object::toString)
                 .collect(Collectors.toList());
         if (args.length == 0) {

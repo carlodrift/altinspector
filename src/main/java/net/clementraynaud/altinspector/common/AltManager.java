@@ -63,5 +63,4 @@ public abstract class AltManager {
             data.set(playerIp, playersFromIp);
         }
     }
-
 }
