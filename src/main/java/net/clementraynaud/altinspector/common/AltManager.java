@@ -20,6 +20,9 @@
 package net.clementraynaud.altinspector.common;
 
 import com.google.common.hash.Hashing;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.StandardCharsets;
@@ -61,6 +64,17 @@ public abstract class AltManager {
         if (!playersFromIp.contains(playerId)) {
             playersFromIp.add(playerId);
             data.set(playerIp, playersFromIp);
+        }
+    }
+
+    public static Component searchResultComponent(String targetId, YamlFile data, PlayerNameRetriever playerNameRetriever) {
+        Set<String> names = new HashSet<>();
+        AltManager.allAlts(targetId, data).forEach(id -> names.add(playerNameRetriever.name(id)));
+        if (names.isEmpty()) {
+            return Messages.NO_ALTS_FOUND.component(playerNameRetriever.name(targetId));
+        } else {
+            return Messages.ALTS_FOUND.component(playerNameRetriever.name(targetId)).append(LegacyComponentSerializer.legacyAmpersand().deserialize("&e" + String.join("&7" + ", "
+                    + "&e", names)).append(Component.text(".", NamedTextColor.GRAY)));
         }
     }
 }

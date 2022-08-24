@@ -45,7 +45,7 @@ public enum Messages {
     }
 
     public Component component(String... args) {
-        return Messages.PREFIX.message.append(GsonComponentSerializer.gson().deserialize(String.format(GsonComponentSerializer.gson().serialize(
+        return Messages.PREFIX.message.append(GsonComponentSerializer.colorDownsamplingGson().deserialize(String.format(GsonComponentSerializer.colorDownsamplingGson().serialize(
                         this.message),
                 args
         )));

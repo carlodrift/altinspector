@@ -144,5 +144,15 @@
             <artifactId>adventure-platform-bukkit</artifactId>
             <version>4.1.2</version>
         </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-serializer-gson</artifactId>
+            <version>4.11.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-serializer-legacy</artifactId>
+            <version>4.11.0</version>
+        </dependency>
     </dependencies>
 </project>

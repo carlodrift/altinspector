@@ -56,7 +56,6 @@ public final class Altinspector extends JavaPlugin {
     public void onDisable() {
         if (this.adventure != null) {
             this.adventure.close();
-            this.adventure = null;
         }
     }
 }

@@ -21,11 +21,9 @@ package net.clementraynaud.altinspector.spigot.commands.altinspector;
 
 import net.clementraynaud.altinspector.common.AltManager;
 import net.clementraynaud.altinspector.common.Messages;
+import net.clementraynaud.altinspector.common.PlayerNameRetriever;
 import net.clementraynaud.altinspector.spigot.Altinspector;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -34,14 +32,12 @@ import org.bukkit.command.TabCompleter;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class AltinspectorCommand implements CommandExecutor, TabCompleter {
+public class AltinspectorCommand implements CommandExecutor, TabCompleter, PlayerNameRetriever {
 
     private final Altinspector plugin;
 
@@ -49,7 +45,8 @@ public class AltinspectorCommand implements CommandExecutor, TabCompleter {
         this.plugin = plugin;
     }
 
-    private String name(String playerId) {
+    @Override
+    public String name(String playerId) {
         String name = null;
         try {
             name = this.plugin.getServer().getOfflinePlayer(UUID.fromString(playerId)).getName();
@@ -75,14 +72,7 @@ public class AltinspectorCommand implements CommandExecutor, TabCompleter {
             } catch (IllegalArgumentException e) {
                 targetId = this.plugin.getServer().getOfflinePlayer(args[0]).getUniqueId().toString();
             }
-            Set<String> names = new HashSet<>();
-            AltManager.allAlts(targetId, this.plugin.data()).forEach(id -> names.add(this.name(id)));
-            if (names.isEmpty()) {
-                source.sendMessage(Messages.NO_ALTS_FOUND.component(this.name(targetId)));
-            } else {
-                source.sendMessage(Messages.ALTS_FOUND.component(this.name(targetId)).append(LegacyComponentSerializer.legacyAmpersand().deserialize("&e" + String.join("&7" + ", "
-                        + "&e", names)).append(Component.text(".", NamedTextColor.GRAY))));
-            }
+            source.sendMessage(AltManager.searchResultComponent(targetId, this.plugin.data(), this));
         });
         return true;
     }
