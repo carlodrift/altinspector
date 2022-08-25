@@ -3,15 +3,16 @@ package net.clementraynaud.altinspector.velocity;
 import com.google.inject.Inject;
 import com.velocitypowered.api.command.CommandManager;
 import com.velocitypowered.api.command.CommandMeta;
-import com.velocitypowered.api.command.SimpleCommand;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
+import net.clementraynaud.altinspector.common.AltManager;
 import net.clementraynaud.altinspector.common.YamlFile;
 import net.clementraynaud.altinspector.velocity.commands.altinspector.AltinspectorCommand;
 import net.clementraynaud.altinspector.velocity.listeners.PlayerListener;
+import org.bstats.velocity.Metrics;
 
 import java.nio.file.Path;
 
@@ -25,13 +26,21 @@ import java.nio.file.Path;
 )
 public class Altinspector {
 
+    private static final int BSTATS_ID = 16269;
     @Inject
     private ProxyServer proxy;
     @DataDirectory
     @Inject
     private Path dataDirectory;
+    @Inject
+    private Metrics.Factory bStats;
     private YamlFile data;
     private YamlFile usernames;
+    private AltManager altManager;
+
+    public AltManager altManager() {
+        return this.altManager;
+    }
 
     public YamlFile data() {
         return this.data;
@@ -49,7 +58,7 @@ public class Altinspector {
     public void onProxyInitialization(ProxyInitializeEvent event) {
         this.data = new YamlFile("data", this.dataDirectory);
         this.usernames = new YamlFile("usernames", this.dataDirectory);
-        this.proxy.getEventManager().register(this, new PlayerListener(this.data, this.usernames));
+        this.proxy.getEventManager().register(this, new PlayerListener(this));
 
         CommandManager commandManager = this.proxy.getCommandManager();
         CommandMeta commandMeta = commandManager.metaBuilder("altinspector")
@@ -57,9 +66,11 @@ public class Altinspector {
                 .plugin(this)
                 .build();
 
-        SimpleCommand simpleCommand = new AltinspectorCommand(this);
+        AltinspectorCommand altinspectorCommand = new AltinspectorCommand(this);
 
-        commandManager.register(commandMeta, simpleCommand);
+        commandManager.register(commandMeta, altinspectorCommand);
+        this.altManager = new AltManager(this.data, altinspectorCommand);
+        this.bStats.make(this, Altinspector.BSTATS_ID);
     }
 
 }

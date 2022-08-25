@@ -40,10 +40,12 @@ public class YamlFile extends YamlConfiguration {
 
     private void load() {
         try {
+            this.path.toFile().mkdirs();
             this.file = this.path.resolve(String.format("%s.yml", this.name)).toFile();
             if (this.file.exists() && !this.file.isFile()) {
                 Files.delete(this.file.toPath());
             }
+            this.file.createNewFile();
             this.load(this.file);
             this.save();
         } catch (IOException e) {

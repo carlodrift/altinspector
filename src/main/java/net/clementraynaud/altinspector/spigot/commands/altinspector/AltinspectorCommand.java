@@ -72,7 +72,7 @@ public class AltinspectorCommand implements CommandExecutor, TabCompleter, Playe
             } catch (IllegalArgumentException e) {
                 targetId = this.plugin.getServer().getOfflinePlayer(args[0]).getUniqueId().toString();
             }
-            source.sendMessage(AltManager.searchResultComponent(targetId, this.plugin.data(), this));
+            source.sendMessage(this.plugin.altManager().searchResultComponent(targetId));
         });
         return true;
     }

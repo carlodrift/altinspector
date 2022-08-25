@@ -21,28 +21,24 @@ package net.clementraynaud.altinspector.velocity.listeners;
 
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.player.GameProfileRequestEvent;
-import net.clementraynaud.altinspector.common.AltManager;
-import net.clementraynaud.altinspector.common.YamlFile;
+import net.clementraynaud.altinspector.velocity.Altinspector;
 
 public class PlayerListener {
 
-    private final YamlFile data;
-    private final YamlFile usernames;
+    private final Altinspector plugin;
 
-    public PlayerListener(YamlFile data, YamlFile usernames) {
-        this.data = data;
-        this.usernames = usernames;
+    public PlayerListener(Altinspector plugin) {
+        this.plugin = plugin;
     }
 
     @Subscribe
     public void onGameProfileRequest(GameProfileRequestEvent event) {
         String playerId = event.getGameProfile().getId().toString();
-        String playerName = event.getGameProfile().getName();
         String playerIp = event.getConnection().getRemoteAddress().getAddress().getHostAddress();
+        this.plugin.altManager().savePlayerIp(playerId, playerIp);
 
-        AltManager.savePlayerIp(this.data, playerId, playerIp);
-
-        this.usernames.set(playerId, playerName);
+        String playerName = event.getGameProfile().getName();
+        this.plugin.usernames().set(playerId, playerName);
     }
 
 }

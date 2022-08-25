@@ -19,6 +19,7 @@
 
 package net.clementraynaud.altinspector.spigot;
 
+import net.clementraynaud.altinspector.common.AltManager;
 import net.clementraynaud.altinspector.common.YamlFile;
 import net.clementraynaud.altinspector.spigot.commands.altinspector.AltinspectorCommand;
 import net.clementraynaud.altinspector.spigot.listeners.PlayerListener;
@@ -31,6 +32,11 @@ public final class Altinspector extends JavaPlugin {
     private static final int BSTATS_ID = 16034;
     private YamlFile data;
     private BukkitAudiences adventure;
+    private AltManager altManager;
+
+    public AltManager altManager() {
+        return this.altManager;
+    }
 
     public YamlFile data() {
         return this.data;
@@ -45,8 +51,10 @@ public final class Altinspector extends JavaPlugin {
         this.data = new YamlFile("data", this.getDataFolder().toPath());
         this.adventure = BukkitAudiences.create(this);
 
-        this.getCommand("altinspector").setExecutor(new AltinspectorCommand(this));
-        this.getServer().getPluginManager().registerEvents(new PlayerListener(this.data), this);
+        AltinspectorCommand altinspectorCommand = new AltinspectorCommand(this);
+        this.getCommand("altinspector").setExecutor(altinspectorCommand);
+        this.altManager = new AltManager(this.data, altinspectorCommand);
+        this.getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
 
         new Updater(this, this.getFile().getAbsolutePath(), this.getName());
         new Metrics(this, Altinspector.BSTATS_ID);

@@ -24,7 +24,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 
 public enum Messages {
-
     PREFIX(Component.text("", NamedTextColor.GRAY)
             .append(Component.text("Altinspector", NamedTextColor.LIGHT_PURPLE))
             .append(Component.text(" • ", NamedTextColor.DARK_GRAY))),
@@ -32,12 +31,9 @@ public enum Messages {
     NO_ALTS_FOUND(Component.text("No other account found for ")
             .append(Component.text("%s", NamedTextColor.YELLOW))
             .append(Component.text(".", NamedTextColor.GRAY))),
-
     ALTS_FOUND(Component.text("Other accounts found for ")
             .append(Component.text("%s", NamedTextColor.YELLOW))
             .append(Component.text(": ", NamedTextColor.GRAY)));
-
-
     private final Component message;
 
     Messages(Component message) {
@@ -45,9 +41,10 @@ public enum Messages {
     }
 
     public Component component(String... args) {
-        return Messages.PREFIX.message.append(GsonComponentSerializer.colorDownsamplingGson().deserialize(String.format(GsonComponentSerializer.colorDownsamplingGson().serialize(
-                        this.message),
-                args
-        )));
+        return Messages.PREFIX.message
+                .append(GsonComponentSerializer.colorDownsamplingGson().deserialize(
+                        String.format(GsonComponentSerializer.colorDownsamplingGson().serialize(
+                                this.message), args))
+                );
     }
 }

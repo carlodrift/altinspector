@@ -70,7 +70,7 @@ public class AltinspectorCommand implements SimpleCommand, PlayerNameRetriever {
                     }
                 }
             }
-            source.sendMessage(AltManager.searchResultComponent(targetId, this.plugin.data(), this));
+            source.sendMessage(this.plugin.altManager().searchResultComponent(targetId));
         }).schedule();
     }
 

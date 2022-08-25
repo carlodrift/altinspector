@@ -19,18 +19,17 @@
 
 package net.clementraynaud.altinspector.spigot.listeners;
 
-import net.clementraynaud.altinspector.common.AltManager;
-import net.clementraynaud.altinspector.common.YamlFile;
+import net.clementraynaud.altinspector.spigot.Altinspector;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 
 public class PlayerListener implements Listener {
 
-    private final YamlFile data;
+    private final Altinspector plugin;
 
-    public PlayerListener(YamlFile data) {
-        this.data = data;
+    public PlayerListener(Altinspector plugin) {
+        this.plugin = plugin;
     }
 
     @EventHandler
@@ -38,7 +37,7 @@ public class PlayerListener implements Listener {
         String playerId = event.getPlayer().getUniqueId().toString();
         String playerIp = event.getRealAddress().getHostAddress();
 
-        AltManager.savePlayerIp(this.data, playerId, playerIp);
+        this.plugin.altManager().savePlayerIp(playerId, playerIp);
     }
 
 }
