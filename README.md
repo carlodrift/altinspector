@@ -1,6 +1,16 @@
-# Altinspector<br>[![](https://img.shields.io/spiget/downloads/104673?style=flat&labelColor=697EC4&color=7289DA&label=Downloads)](https://www.spigotmc.org/resources/altinspector-beyond-ip-check.104673/) [![](https://img.shields.io/spiget/rating/104673?style=flat&labelColor=697EC4&color=7289DA&label=Rating)](https://www.spigotmc.org/resources/altinspector-beyond-ip-check.104673/) [![](https://img.shields.io/discord/741375523275407461.svg?style=flat&labelColor=697EC4&color=7289DA&label=Discord)](https://discord.gg/h3Tgccc)
+# Altinspector: Beyond IP check<br>[![](https://img.shields.io/spiget/downloads/104673?style=flat&labelColor=697EC4&color=7289DA&label=Downloads)](https://www.spigotmc.org/resources/altinspector-beyond-ip-check.104673/) [![](https://img.shields.io/spiget/rating/104673?style=flat&labelColor=697EC4&color=7289DA&label=Rating)](https://www.spigotmc.org/resources/altinspector-beyond-ip-check.104673/) [![](https://img.shields.io/discord/741375523275407461.svg?style=flat&labelColor=697EC4&color=7289DA&label=Discord)](https://discord.gg/h3Tgccc)
 
 Open-source plugin to find your players' other accounts beyond a simple IP check.
+
+## Download
+
+To download our plugin, please [head to our Spigot page](https://www.spigotmc.org/resources/altinspector-beyond-ip-check.104673/). Consider leaving a review if you enjoy our work!
+
+You can use Altinspector on the following server software:
+- Spigot (or derivative like [Paper](https://papermc.io/downloads))
+- [Velocity](https://velocitypowered.com/downloads)
+- [Fabric](https://fabricmc.net/use/installer/) (using [Cardboard](https://cardboardpowered.org/))
+- Forge (using hybrid server software)
 
 ## Commands
 
