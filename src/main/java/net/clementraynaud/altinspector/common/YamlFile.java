@@ -45,8 +45,9 @@ public class YamlFile extends YamlConfiguration {
             if (this.file.exists() && !this.file.isFile()) {
                 Files.delete(this.file.toPath());
             }
-            this.file.createNewFile();
-            this.load(this.file);
+            if (!this.file.createNewFile()) {
+                this.load(this.file);
+            }
             this.save();
         } catch (IOException e) {
             e.printStackTrace();

@@ -13,6 +13,7 @@ import net.clementraynaud.altinspector.common.YamlFile;
 import net.clementraynaud.altinspector.velocity.commands.altinspector.AltinspectorCommand;
 import net.clementraynaud.altinspector.velocity.listeners.PlayerListener;
 import org.bstats.velocity.Metrics;
+import org.slf4j.Logger;
 
 import java.nio.file.Path;
 
@@ -27,6 +28,7 @@ import java.nio.file.Path;
 public class Altinspector {
 
     private static final int BSTATS_ID = 16269;
+    private static final String VERSION = "1.0";
     @Inject
     private ProxyServer proxy;
     @DataDirectory
@@ -34,25 +36,12 @@ public class Altinspector {
     private Path dataDirectory;
     @Inject
     private Metrics.Factory bStats;
+    @Inject
+    private Logger logger;
     private YamlFile data;
     private YamlFile usernames;
     private AltManager altManager;
-
-    public AltManager altManager() {
-        return this.altManager;
-    }
-
-    public YamlFile data() {
-        return this.data;
-    }
-
-    public YamlFile usernames() {
-        return this.usernames;
-    }
-
-    public ProxyServer proxy() {
-        return this.proxy;
-    }
+    private boolean outdatedVersion = false;
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
@@ -73,4 +62,35 @@ public class Altinspector {
         this.bStats.make(this, Altinspector.BSTATS_ID);
     }
 
+    public AltManager altManager() {
+        return this.altManager;
+    }
+
+    public YamlFile data() {
+        return this.data;
+    }
+
+    public YamlFile usernames() {
+        return this.usernames;
+    }
+
+    public ProxyServer proxy() {
+        return this.proxy;
+    }
+
+    public Logger logger() {
+        return this.logger;
+    }
+
+    public String version() {
+        return Altinspector.VERSION;
+    }
+
+    public boolean outdatedVersion() {
+        return this.outdatedVersion;
+    }
+
+    public void setOutdatedVersion(boolean outdatedVersion) {
+        this.outdatedVersion = outdatedVersion;
+    }
 }

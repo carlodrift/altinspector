@@ -54,6 +54,10 @@ public class AltinspectorCommand implements SimpleCommand, PlayerNameRetriever {
 
         String[] args = invocation.arguments();
 
+        if (this.plugin.outdatedVersion()) {
+            source.sendMessage(Messages.OUTDATED_VERSION.component());
+        }
+
         if (args.length == 0) {
             source.sendMessage(Messages.NO_PLAYER_SPECIFIED.component());
             return;

@@ -22,6 +22,7 @@ package net.clementraynaud.altinspector.common;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import org.bukkit.ChatColor;
 
 public enum Messages {
     PREFIX(Component.text("", NamedTextColor.GRAY)
@@ -33,7 +34,11 @@ public enum Messages {
             .append(Component.text(".", NamedTextColor.GRAY))),
     ALTS_FOUND(Component.text("Other accounts found for ")
             .append(Component.text("%s", NamedTextColor.YELLOW))
-            .append(Component.text(": ", NamedTextColor.GRAY)));
+            .append(Component.text(": ", NamedTextColor.GRAY))),
+
+    OUTDATED_VERSION(Component.text("An update is available:")
+            .append(Component.text("https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861", NamedTextColor.AQUA))
+            .append(Component.text(".", NamedTextColor.GRAY)));
     private final Component message;
 
     Messages(Component message) {

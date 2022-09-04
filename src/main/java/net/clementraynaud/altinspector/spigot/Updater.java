@@ -34,7 +34,7 @@ import java.util.function.Consumer;
 public class Updater {
 
     private static final long TICKS_BETWEEN_VERSION_CHECKING = 720000L;
-    private static final long TICKS_BEFORE_VERSION_CHECKING = 1000L;
+    private static final long TICKS_BEFORE_VERSION_CHECKING = 6000L;
     private static final String VERSION_URL = "https://clementraynaud.net/files/%s-latest/version";
     private static final String AUTO_DOWNLOAD_URL = "https://clementraynaud.net/files/%s-latest/%s.jar";
     private static final String MANUAL_DOWNLOAD_URL = "https://www.spigotmc.org/resources/altinspector-beyond-ip-check.104673/";
