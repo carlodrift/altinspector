@@ -7,10 +7,10 @@ Open-source plugin to find your players' other accounts beyond a simple IP check
 To download our plugin, please [head to our Spigot page](https://www.spigotmc.org/resources/altinspector-beyond-ip-check.104673/). Consider leaving a review if you enjoy our work!
 
 You can use Altinspector on the following server software:
-- Spigot (or derivative like [Paper](https://papermc.io/downloads))
 - [Velocity](https://velocitypowered.com/downloads)
-- [Fabric](https://fabricmc.net/use/installer/) (using [Cardboard](https://cardboardpowered.org/))
-- Forge (using hybrid server software)
+- Spigot (or derivative like Paper, [Purpur](https://purpurmc.org/downloads))
+- Fabric (using [Cardboard](https://cardboardpowered.org/))
+- Forge (using [Magma](https://magmafoundation.org/) or [Mohist](https://mohistmc.com/))
 
 ## Commands
 
