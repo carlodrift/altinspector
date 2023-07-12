@@ -22,7 +22,6 @@ package net.clementraynaud.altinspector.common;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
-import org.bukkit.ChatColor;
 
 public enum Messages {
     PREFIX(Component.text("", NamedTextColor.GRAY)

@@ -21,7 +21,6 @@ package net.clementraynaud.altinspector.velocity.commands.altinspector;
 
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.command.SimpleCommand;
-import net.clementraynaud.altinspector.common.AltManager;
 import net.clementraynaud.altinspector.common.Messages;
 import net.clementraynaud.altinspector.common.PlayerNameRetriever;
 import net.clementraynaud.altinspector.velocity.Altinspector;
@@ -29,7 +28,6 @@ import net.clementraynaud.altinspector.velocity.Altinspector;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class AltinspectorCommand implements SimpleCommand, PlayerNameRetriever {
 
@@ -83,14 +81,14 @@ public class AltinspectorCommand implements SimpleCommand, PlayerNameRetriever {
         String[] args = invocation.arguments();
         List<String> suggestions = this.plugin.usernames().getValues(false).values().stream()
                 .map(Object::toString)
-                .collect(Collectors.toList());
+                .toList();
         if (args.length == 0) {
             return suggestions;
         }
         if (args.length == 1) {
             return suggestions.stream()
                     .filter(name -> name.toLowerCase().contains(args[0].toLowerCase()) || args[0].toLowerCase().contains(name.toLowerCase()))
-                    .collect(Collectors.toList());
+                    .toList();
         }
         return Collections.emptyList();
     }

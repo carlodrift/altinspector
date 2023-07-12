@@ -19,7 +19,6 @@
 
 package net.clementraynaud.altinspector.spigot.commands.altinspector;
 
-import net.clementraynaud.altinspector.common.AltManager;
 import net.clementraynaud.altinspector.common.Messages;
 import net.clementraynaud.altinspector.common.PlayerNameRetriever;
 import net.clementraynaud.altinspector.spigot.Altinspector;
@@ -35,7 +34,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class AltinspectorCommand implements CommandExecutor, TabCompleter, PlayerNameRetriever {
 
@@ -83,7 +81,7 @@ public class AltinspectorCommand implements CommandExecutor, TabCompleter, Playe
             return Arrays.stream(this.plugin.getServer().getOfflinePlayers())
                     .map(OfflinePlayer::getName).filter(Objects::nonNull)
                     .filter(name -> name.toLowerCase().contains(args[0].toLowerCase()) || args[0].toLowerCase().contains(name.toLowerCase()))
-                    .collect(Collectors.toList());
+                    .toList();
         } else {
             return Collections.emptyList();
         }

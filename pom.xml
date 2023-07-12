@@ -12,7 +12,7 @@
     <name>altinspector</name>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <url>https://github.com/carlodrift/altinspector</url>
@@ -36,31 +36,58 @@
                     <minimizeJar>true</minimizeJar>
                     <relocations>
                         <relocation>
+                            <pattern>com.google</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.google</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.kyori</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.net.kyori</shadedPattern>
+                        </relocation>
+                        <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.dependencies</shadedPattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.org.bstats</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>com.google.guava</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.dependencies</shadedPattern>
+                            <pattern>org.intellij</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.org.intellij
+                            </shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>me.carleslc.Simple-YAML</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.dependencies</shadedPattern>
+                            <pattern>org.jetbrains</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.org.jetbrains
+                            </shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>org.yaml</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.dependencies</shadedPattern>
+                            <pattern>org.simpleyaml</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.org.simpleyaml
+                            </shadedPattern>
                         </relocation>
                     </relocations>
                     <filters>
                         <filter>
                             <artifact>*:*</artifact>
                             <excludes>
-                                <exclude>META-INF/*</exclude>
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                                <exclude>META-INF/MANIFEST.MF</exclude>
+                                <exclude>META-INF/versions/*/module-info.class</exclude>
+                                <exclude>META-INF/maven/**</exclude>
+                                <exclude>META-INF/versions/**</exclude>
+                                <exclude>META-INF/proguard/**</exclude>
+                                <exclude>**/*.kotlin_module</exclude>
                                 <exclude>module-info.class</exclude>
                             </excludes>
                         </filter>
                     </filters>
+                    <transformers>
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer"/>
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer"/>
+                    </transformers>
                 </configuration>
                 <executions>
                     <execution>
@@ -103,16 +130,15 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.19.2-R0.1-SNAPSHOT</version>
+            <version>1.20.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.velocitypowered</groupId>
             <artifactId>velocity-api</artifactId>
-            <version>3.1.1</version>
+            <version>3.2.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
@@ -124,27 +150,6 @@
             <version>3.0.0</version>
         </dependency>
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>31.1-jre</version>
-        </dependency>
-        <dependency>
-            <groupId>me.carleslc.Simple-YAML</groupId>
-            <artifactId>Simple-Yaml</artifactId>
-            <version>1.8.1</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.yaml</groupId>
-                    <artifactId>snakeyaml</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <version>1.30</version>
-        </dependency>
-        <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
             <version>4.1.2</version>
@@ -152,12 +157,23 @@
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-gson</artifactId>
-            <version>4.11.0</version>
+            <version>4.12.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-legacy</artifactId>
-            <version>4.11.0</version>
+            <version>4.12.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.Carleslc.Simple-YAML</groupId>
+            <artifactId>Simple-Yaml</artifactId>
+            <version>1.8.4</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.github.Carleslc.Simple-YAML</groupId>
+                    <artifactId>Simple-Configuration</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 </project>
